@@ -1,7 +1,8 @@
 <template>
     <div>
-        记账
-        <Nav></Nav>
+        <Layout>
+            <p>2</p>
+        </Layout>
     </div>
 </template>
 

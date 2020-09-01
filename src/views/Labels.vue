@@ -1,7 +1,8 @@
 <template>
     <div>
-        标签
-        <Nav></Nav>
+        <Layout>
+            <p>3</p>
+        </Layout>
     </div>
 </template>
 

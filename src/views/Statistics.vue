@@ -1,7 +1,8 @@
 <template>
     <div>
-        统计
-        <Nav></Nav>
+        <Layout>
+            <p>1</p>
+        </Layout>
     </div>
 </template>
 
