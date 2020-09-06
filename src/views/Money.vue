@@ -14,9 +14,10 @@
     import Tags from '@/components/money/Tags.vue';
     import Notes from '@/components/money/Notes.vue';
     import {Component, Watch} from 'vue-property-decorator';
+    const {model} = require('@/model.js')
 
     const version = window.localStorage.getItem('version') || '0';
-    const recordList: Record[] = JSON.parse(window.localStorage.getItem('recordList') || '[]');
+    const recordList: Record[] = model.fetch();
     if(version === '0.0.1') {
         // 数据库升级，数据迁移
         recordList.forEach(record => {
@@ -39,7 +40,7 @@
         components: {Notes, Types, NumberPad, Tags}
     })
     export default class Money extends Vue{
-        tags = ['服饰', '饮食', '住宿', '交通'];
+        tags = ['服饰', '餐饮', '住宿', '交通'];
         recordList: Record[] = JSON.parse(window.localStorage.getItem('recordList') || '[]');
         record: Record = {
             tags: [], notes: '', type: '-', amount: 0
