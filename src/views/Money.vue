@@ -14,35 +14,28 @@
     import Tags from '@/components/money/Tags.vue';
     import Notes from '@/components/money/Notes.vue';
     import {Component, Watch} from 'vue-property-decorator';
-    const {model} = require('@/model.js')
+    import model from '@/model';
 
-    const version = window.localStorage.getItem('version') || '0';
-    const recordList: Record[] = model.fetch();
-    if(version === '0.0.1') {
-        // 数据库升级，数据迁移
-        recordList.forEach(record => {
-            record.createdAt = new Date(2020, 0, 1)
-        });
-        //保存数据
-        window.localStorage.setItem('recordList', JSON.stringify(recordList));
-    }
-    window.localStorage.setItem('version', '0.0.2')
+    // const version = window.localStorage.getItem('version') || '0';
+    // if(version === '0.0.1') {
+    //     // 数据库升级，数据迁移
+    //     recordList.forEach(record => {
+    //         record.createdAt = new Date(2020, 0, 1)
+    //     });
+    //     //保存数据
+    //     window.localStorage.setItem('recordList', JSON.stringify(recordList));
+    // }
+    // window.localStorage.setItem('version', '0.0.2')
 
-    type Record = {
-        tags: string[];
-        notes: string;
-        type: string;
-        amount: number;
-        createdAt?: Date;
-    }
+    const recordList = model.fetch();
 
     @Component({
         components: {Notes, Types, NumberPad, Tags}
     })
     export default class Money extends Vue{
         tags = ['服饰', '餐饮', '住宿', '交通'];
-        recordList: Record[] = JSON.parse(window.localStorage.getItem('recordList') || '[]');
-        record: Record = {
+        recordList: RecordItem[] = recordList;
+        record: RecordItem = {
             tags: [], notes: '', type: '-', amount: 0
         };
 
@@ -56,14 +49,14 @@
             this.record.amount = parseFloat(value);
         }
         saveRecord() {
-            const record2 = JSON.parse(JSON.stringify(this.record)); //deepClone(将record的复制保存到list)
+            const record2 = model.clone(this.record); //deepClone(将record的复制保存到list)
             record2.createdAt = new Date();
             this.recordList.push(record2);
         }
         
         @Watch('recordList')
         onRecordListchange() {
-            window.localStorage.setItem('recordList', JSON.stringify(this.recordList))
+            model.save(this.recordList);
         }
     }
 </script>
