@@ -2,7 +2,7 @@
     <div>
         <label class="notes">
             {{value}}
-            <span class="name">备注</span>
+            <span class="name"><Icon name="remarks"></Icon></span>
             <input type="text"
                    v-model="value"
                    placeholder="请输入备注">

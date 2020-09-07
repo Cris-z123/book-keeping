@@ -1,6 +1,7 @@
 <template>
     <div class="tags">
         <div class="new">
+            <Icon name="tag"></Icon>
             <button @click="create">新增标签</button>
         </div>
         <ul class="current">

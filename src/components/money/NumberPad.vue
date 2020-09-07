@@ -5,7 +5,7 @@
                 <button @click="inputContent">1</button>
                 <button @click="inputContent">2</button>
                 <button @click="inputContent">3</button>
-                <button @click="remove">删除</button>
+                <button @click="remove"><Icon name="back"></Icon></button>
                 <button @click="inputContent">4</button>
                 <button @click="inputContent">5</button>
                 <button @click="inputContent">6</button>
@@ -114,6 +114,9 @@
             }
             &:nth-child(14) {
                 background: darken($bg, 4*6%);
+            }
+            > .icon {
+                font-size: 21px;
             }
         }
     }

@@ -30,9 +30,10 @@
 @import "~@/assets/style/helper.scss";
 .types {
     display: flex;
-    background: #c4c4c4;
+    background: #99ccff;
     text-align: center;
     font-size: 24px;
+    color: #fff;
     > li {
         display: flex;
         width: 50%;
@@ -46,8 +47,8 @@
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 4px;
-            background: #333;
+            height: 100%;
+            background: rgba(#6699cc, 0.2);
         }
     }
 }
