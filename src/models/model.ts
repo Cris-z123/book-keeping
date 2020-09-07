@@ -5,10 +5,10 @@ const model = {
         return JSON.parse(JSON.stringify(data));
     },
     fetch() {
-        return JSON.parse(window.localStorage.getItem('recordList') || '[]') as RecordItem[];
+        return JSON.parse(window.localStorage.getItem(localStorageKeyName) || '[]') as RecordItem[];
     },
     save(data: RecordItem[]) {
-        window.localStorage.setItem('localStorageKeyName', JSON.stringify(data));
+        window.localStorage.setItem(localStorageKeyName, JSON.stringify(data));
     }
 };
 
