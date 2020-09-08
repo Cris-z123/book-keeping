@@ -3,7 +3,8 @@
         <label class="notes">
             <span class="name">{{this.fieldName}}</span>
             <input type="text"
-                   v-model="value"
+                   :value="value"
+                   @input="onValueChanged($event.target.value)"
                    :placeholder="this.placeholder">
         </label>
     </div>
@@ -15,7 +16,7 @@
 
     @Component
     export default class Notes extends Vue{
-        value = '';
+        @Prop({default: ''}) readonly value!: string;
 
         @Prop({required: true}) fieldName!: string;
         @Prop() placeholder?: string;
@@ -30,17 +31,15 @@
 <style lang="scss" scoped>
 @import "~@/assets/style/helper.scss";
 .notes {
-    display: block;
     display: flex;
     align-items: center;
-    padding: 16px 0;
+    padding-left: 16px;
     font-size: 14px;
-    background: #f5f5f5;
     .name {
         padding: 16px;
     }
     input {
-        height: 64px;
+        height: 44px;
         flex-grow: 1;
         background: transparent;
         border: none;
