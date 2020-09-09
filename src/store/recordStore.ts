@@ -1,6 +1,24 @@
-import model from '@/models/model'
+import clone from '@/lib/clone'
 
-export default {
-    recordList : model.fetch(),
-    createRecord : (record: RecordItem) => model.create(record)
-}
+const localStorageKeyName = 'recordList';
+
+const recordStore = {
+    recordList : [] as RecordItem[],
+    fetchRecords() {
+        this.recordList = JSON.parse(window.localStorage.getItem(localStorageKeyName) || '[]') as RecordItem[];
+        return this.recordList;
+    },
+    saveRecords() {
+        window.localStorage.setItem(localStorageKeyName, JSON.stringify(this.recordList));
+    },
+    createRecord(record: RecordItem) {
+        const record2: RecordItem = clone(record); //deepClone(将record的复制保存到list)
+        record2.createdAt = new Date();
+        this.recordList && this.recordList.push(record2)
+        recordStore.saveRecords();
+    }
+};
+
+recordStore.fetchRecords();
+
+export default recordStore;
