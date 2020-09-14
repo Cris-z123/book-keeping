@@ -3,9 +3,19 @@
             <Tabs class-Prefix="type" :data-source="recordTypeList" :value.sync="type"></Tabs>
             <Tabs class-Prefix="interval" :data-source="intervalList" :value.sync="interval"></Tabs>
             <div>
-                type: {{type}}
-                <br>
-                interval: {{interval}}
+                <ol>
+                    <li v-for="group in result" :key="group.title">
+                        <h3 class="title">{{group.title}}</h3>
+                        <ol>
+                            <li v-for="item in group.items" :key="item.id"
+                                class="record">
+                                <span>{{tagString(item.tags)}}</span>
+                                <span class="notes">{{item.notes}}</span>
+                                <span>￥{{item.amount}}</span>
+                            </li>
+                        </ol>
+                    </li>
+                </ol>
             </div>
         </Layout>
 </template>
@@ -25,6 +35,30 @@
         interval = 'day';
         intervalList = intervalList;
         recordTypeList = recordTypeList;
+
+        tagString(tags: Tag[]) {
+            return tags.length === 0 ? '无' : tags.join(',');
+        }
+
+        get recordList() {
+            return (this.$store.state as RootState).recordList;
+        }
+        get result() {
+            const {recordList} = this;
+            type HashTableValue = {title: string; items: RecordItem[] }
+
+            const hashTable: {[key: string]: HashTableValue } = {};
+            for(let i=0; i<recordList.length; i++) {
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                const [date] = recordList[i].createdAt!.split('T');
+                hashTable[date] = hashTable[date] || {title: date, items: []};
+                hashTable[date].items.push(recordList[i]);
+            }
+            return hashTable
+        }
+        beforeCreate() {
+            this.$store.commit('fetchRecords')
+        }
     }
 </script>
 
@@ -38,5 +72,24 @@
 ::v-deep .interval-tabs-item {
     height: 10px;
     border: 1px solid red;
+}
+%item {
+    padding: 8px 16px;
+    line-height: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+}
+.title {
+    @extend %item;
+}
+.record {
+    background: white;
+    @extend %item;
+}
+.notes {
+    margin-right: auto;
+    margin-left: 16px;
+    color: #999999;
 }
 </style>
