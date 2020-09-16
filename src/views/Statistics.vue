@@ -4,8 +4,8 @@
             <Tabs class-Prefix="interval" :data-source="intervalList" :value.sync="interval"></Tabs>
             <div>
                 <ol>
-                    <li v-for="group in result" :key="group.title">
-                        <h3 class="title">{{beautify(group.title)}}</h3>
+                    <li v-for="(group,index) in groupedList" :key="index">
+                        <h3 class="title">{{beautify(group.title)}}<span>￥{{group.total}}</span></h3>
                         <ol>
                             <li v-for="item in group.items" :key="item.id"
                                 class="record">
@@ -27,7 +27,7 @@
     import intervalList from '@/constants/intervalList'
     import recordTypeList from '@/constants/recordTypeList'
     import dayjs from 'dayjs'
-import clone from '@/lib/clone';
+    import clone from '@/lib/clone';
 
     @Component({
         components: {Tabs}
@@ -61,20 +61,32 @@ import clone from '@/lib/clone';
         get recordList() {
             return (this.$store.state as RootState).recordList;
         }
-        get result() {
+        get groupedList() {
             const {recordList} = this;
-            type HashTableValue = {title: string; items: RecordItem[] }
+            if(recordList.length === 0) { return [];}
 
-            // const hashTable: {[key: string]: HashTableValue } = {};
-            // for(let i=0; i<recordList.length; i++) {
-            //     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            //     const [date] = recordList[i].createdAt!.split('T');
-            //     hashTable[date] = hashTable[date] || {title: date, items: []};
-            //     hashTable[date].items.push(recordList[i]);
-            // }
-            // return hashTable
-            const newList = clone(recordList).sort((a, b) => dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf())
-            return []
+            const newList = clone(recordList).filter(r => r.type === this.type).sort((a, b) => dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf());
+            
+            type Result = {
+                title: string;
+                total?: number;
+                items: RecordItem[];
+            }[]
+            
+            const result: Result = [{title: dayjs(newList[0].createdAt).format('YYYY-MM-DD'), items: [newList[0]]}];
+            for(let i=1; i<newList.length; i++) {
+                const current = newList[i];
+                const last = result[result.length - 1];
+                if(dayjs(last.title).isSame(dayjs(current.createdAt), 'day')) {
+                    last.items.push(current);
+                } else {
+                    result.push({title: dayjs(current.createdAt).format('YYYY-MM-DD'), items: [current]});
+                }
+            }
+            result.map(group => {
+                group.total = group.items.reduce((sum, item) => sum + item.amount, 0);
+            })
+            return result;
         }
         beforeCreate() {
             this.$store.commit('fetchRecords')
