@@ -1,6 +1,9 @@
 const path = require("path");
 
 module.exports = {
+  css: {
+    extract: false
+  },
   lintOnSave: false,
   chainWebpack: config => {
     const dir = path.resolve(__dirname, 'src/assets/icons')
