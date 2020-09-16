@@ -1,7 +1,6 @@
 <template>
         <Layout>
             <Tabs class-Prefix="type" :data-source="recordTypeList" :value.sync="type"></Tabs>
-            <Tabs class-Prefix="interval" :data-source="intervalList" :value.sync="interval"></Tabs>
                 <ol v-if="groupedList.length>0">
                     <li v-for="(group,index) in groupedList" :key="index">
                         <h3 class="title">{{beautify(group.title)}}<span>￥{{group.total}}</span></h3>
@@ -25,7 +24,6 @@
     import Vue from 'vue'
     import { Component } from 'vue-property-decorator';
     import Tabs from '@/components/Tabs.vue';
-    import intervalList from '@/constants/intervalList'
     import recordTypeList from '@/constants/recordTypeList'
     import dayjs from 'dayjs'
     import clone from '@/lib/clone';
@@ -36,7 +34,6 @@
     export default class Statistics extends Vue{
         type = '-';
         interval = 'day';
-        intervalList = intervalList;
         recordTypeList = recordTypeList;
 
         beautify(string: string) {
@@ -97,16 +94,6 @@
 .noResult {
     padding: 16px;
     text-align: center;
-}
-::v-deep .type-tabs-item{
-    background: yellow;
-    &.selected {
-        background: black;
-    }
-}
-::v-deep .interval-tabs-item {
-    height: 10px;
-    border: 1px solid red;
 }
 %item {
     padding: 8px 16px;
