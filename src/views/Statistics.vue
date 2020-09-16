@@ -2,8 +2,7 @@
         <Layout>
             <Tabs class-Prefix="type" :data-source="recordTypeList" :value.sync="type"></Tabs>
             <Tabs class-Prefix="interval" :data-source="intervalList" :value.sync="interval"></Tabs>
-            <div>
-                <ol>
+                <ol v-if="groupedList.length>0">
                     <li v-for="(group,index) in groupedList" :key="index">
                         <h3 class="title">{{beautify(group.title)}}<span>￥{{group.total}}</span></h3>
                         <ol>
@@ -16,7 +15,9 @@
                         </ol>
                     </li>
                 </ol>
-            </div>
+                <div v-else class="noResult">
+                    目前没有相关记录
+                </div>
         </Layout>
 </template>
 
@@ -55,24 +56,22 @@
         }
 
         tagString(tags: Tag[]) {
-            return tags.length === 0 ? '无' : tags.join(',');
+            return tags.length === 0 ? '无' : tags.map(t => t.name).join(',');
         }
 
         get recordList() {
             return (this.$store.state as RootState).recordList;
         }
         get groupedList() {
-            const {recordList} = this;
-            if(recordList.length === 0) { return [];}
-
-            const newList = clone(recordList).filter(r => r.type === this.type).sort((a, b) => dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf());
-            
             type Result = {
                 title: string;
                 total?: number;
                 items: RecordItem[];
             }[]
+            const {recordList} = this;
+            const newList = clone(recordList).filter(r => r.type === this.type).sort((a, b) => dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf());
             
+            if(newList.length === 0) { return []; }
             const result: Result = [{title: dayjs(newList[0].createdAt).format('YYYY-MM-DD'), items: [newList[0]]}];
             for(let i=1; i<newList.length; i++) {
                 const current = newList[i];
@@ -95,6 +94,10 @@
 </script>
 
 <style lang="scss" scoped>
+.noResult {
+    padding: 16px;
+    text-align: center;
+}
 ::v-deep .type-tabs-item{
     background: yellow;
     &.selected {
