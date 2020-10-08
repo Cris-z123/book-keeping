@@ -37,17 +37,21 @@
 <style lang="scss" scoped>
 .tabs {
     display: flex;
+    height: 64px;
     background: #99ccff;
     text-align: center;
-    font-size: 24px;
+    font-size: 20px;
     color: #fff;
+    justify-content: center;
+    align-items: center;
     &-item {
         display: flex;
-        width: 50%;
-        height: 64px;
+        width: 25%;
+        height: 40px;
         justify-content: center;
         align-items: center;
         position: relative;
+        border: 1px solid black;
         &.selected::after {
             content: '';
             position: absolute;
@@ -55,8 +59,20 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(#6699cc, 0.2);
+            background: rgba(#6699cc, 0.3);
         }
+    }
+    &-item:not(:first-child) {
+        margin-left: -1px;
+    }
+    &-item:first-child {
+        border-top-left-radius: 8px;
+        border-bottom-left-radius: 8px;
+        
+    }
+    &-item:last-child {
+        border-top-right-radius: 8px;
+        border-bottom-right-radius: 8px;
     }
 }
 </style>

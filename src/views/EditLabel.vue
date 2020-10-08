@@ -59,9 +59,9 @@
 <style lang="scss" scoped>
 .navBar {
     text-align: center;
-    font-size: 16px;
+    font-size: 18px;
     color: white;
-    padding: 12px 16px;
+    padding: 18px 16px;
     background: #99ccff;
     display: flex;
     align-items: center;

@@ -1,14 +1,14 @@
 <template>
     <div class="tags">
-        <div class="new">
-            <Icon name="tag"></Icon>
-            <button @click="createTag">新增标签</button>
-        </div>
         <ul class="current">
             <li v-for="tag in tagList" :key="tag.id"
                 :class="{selected: selectedTags.indexOf(tag)>=0}"
                 @click="toggle(tag)">{{tag.name}}</li>
         </ul>
+        <div class="new">
+            <Icon name="tag"></Icon>
+            <button @click="createTag">新增标签</button>
+        </div>
     </div>
 </template>
 
@@ -44,22 +44,22 @@
 @import "~@/assets/style/helper.scss";
 .tags {
     background: white;
-    font-size: 14px;
     padding: 16px;
     display: flex;
     flex-grow: 1;
-    flex-direction: column-reverse;
+    flex-direction: column;
+    justify-content: space-between;
     > .current {
         display: flex;
         flex-wrap: wrap;
         > li {
-            height: 24px;
-            line-height: 24px;
-            border-radius: (24px/2);
+            height: 36px;
+            line-height: 36px;
+            border-radius: (36px/2);
             padding: 0 16px;
             margin-right: 12px;
             margin-top: 4px;
-            box-shadow: inset 5em 1em 0.5;
+            box-shadow: inset 5em 1em 0.4;
             background: #ccccff;
             color: white;
             &.selected {
