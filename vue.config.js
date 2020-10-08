@@ -4,6 +4,15 @@ module.exports = {
   css: {
     extract: false
   },
+  pwa: {
+    iconPaths: {
+        favicon32: 'favicon.ico',
+        favicon16: 'favicon.ico',
+        appleTouchIcon: 'favicon.ico',
+        maskIcon: 'favicon.ico',
+        msTileImage: 'favicon.ico'
+    }
+  },
   lintOnSave: false,
   chainWebpack: config => {
     const dir = path.resolve(__dirname, 'src/assets/icons')

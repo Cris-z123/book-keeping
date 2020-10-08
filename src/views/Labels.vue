@@ -1,6 +1,9 @@
 <template>
     <div>
         <Layout>
+            <div class="navBar">
+                <span class="title">编辑标签</span>
+            </div>
             <div class="tags">
                 <router-link class="tag" v-for="tag in tags" :key="tag.id"
                             :to="`/labels/edit/${tag.id}`">
@@ -33,6 +36,16 @@
 </script>
 
 <style lang="scss" scoped>
+.navBar {
+    text-align: center;
+    font-size: 16px;
+    color: white;
+    padding: 12px 16px;
+    background: #99ccff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 .tags {
     background: white;
     font-size: 16px;

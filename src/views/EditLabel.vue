@@ -60,8 +60,9 @@
 .navBar {
     text-align: center;
     font-size: 16px;
+    color: white;
     padding: 12px 16px;
-    background: white;
+    background: #99ccff;
     display: flex;
     align-items: center;
     justify-content: space-between;
