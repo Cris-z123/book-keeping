@@ -88,6 +88,7 @@
             height: 64px;
             background: transparent;
             border: none;
+            font-size: 20px;
             &.ok {
                 height: 64*2px;
                 float: right;
@@ -95,7 +96,7 @@
             &.zero {
                 width: 25*2%;
             }
-            $bg: #f2f2f2;
+            $bg: #ffffff;
             &:nth-child(1) {
                 background: $bg;
             }
@@ -118,7 +119,7 @@
                 background: darken($bg, 4*6%);
             }
             > .icon {
-                font-size: 21px;
+                font-size: 26px;
             }
         }
     }

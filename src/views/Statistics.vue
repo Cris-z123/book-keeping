@@ -1,9 +1,12 @@
 <template>
         <Layout>
             <Tabs class-Prefix="type" :data-source="recordTypeList" :value.sync="type"></Tabs>
+            <div class="chart-wrapper" ref="chartWrapper">
+                <line-chart class="chart" :options="chartOptions"></line-chart>
+            </div>
                 <ol v-if="groupedList.length>0">
                     <li v-for="(group,index) in groupedList" :key="index">
-                        <h3 class="title">{{beautify(group.title)}}<span>￥{{group.total}}</span></h3>
+                        <h3 class="title">{{beautify(group.title)}}<span>总计: ￥{{group.total}}</span></h3>
                         <ol>
                             <li v-for="item in group.items" :key="item.id"
                                 class="record">
@@ -24,12 +27,14 @@
     import Vue from 'vue'
     import { Component } from 'vue-property-decorator';
     import Tabs from '@/components/Tabs.vue';
+    import LineChart from '@/components/Chart.vue';
     import recordTypeList from '@/constants/recordTypeList'
     import dayjs from 'dayjs'
     import clone from '@/lib/clone';
+    import _ from 'lodash';
 
     @Component({
-        components: {Tabs}
+        components: {Tabs, LineChart}
     })
     export default class Statistics extends Vue{
         type = '-';
@@ -84,6 +89,87 @@
             })
             return result;
         }
+        get keyValueList() {
+            const today = new Date();
+            const array = [];
+            for(let i=0; i<=29; i++) {
+                const dateString = dayjs(today).subtract(i, 'day').format('YYYY-MM-DD');
+                const found = _.find(this.groupedList, {title: dateString});
+                array.push({
+                    key: dateString,
+                    value: found ? found.total : 0
+                });
+            }
+            array.sort((a, b) => {
+                if(a.key > b.key) {
+                    return 1;
+                }else if(a.key === b.key) {
+                    return 0;
+                }else {
+                    return -1;
+                }
+            });
+            return array;
+        }
+        get chartOptions() {
+            const keys = this.keyValueList.map(item => item.key);
+            const values = this.keyValueList.map(item => item.value);
+            return {
+                backgroundColor: '#ffffff',
+                title: {
+                    text: '近一个月的账目',
+                    x: 'right',
+                    y: 'bottom',
+                    textStyle: {
+                        fontSize: 18,
+                        fontWeight: 'none',
+                        color: '#999999'
+                    }
+                },
+                grid: {
+                    left: 0,
+                    right: 0
+                },
+                xAxis: {
+                    type: 'category',
+                    data: keys,
+                    axisTick: {
+                        alignWithLabel: true
+                    },
+                    axisLine: {
+                        lineStyle: {
+                            color: '#666'
+                        }
+                    }
+                },
+                yAxis: {
+                    type: 'value',
+                    show: false
+                },
+                series: [{
+                    symbol: 'circle',
+                    symbolSize: 12,
+                    itemStyle: {
+                        borderWidth: 1,
+                        color: '#ccccff',
+                        borderColor: '#666'
+                    },
+                    data: values,
+                    type: 'line'
+                }],
+                tooltip: {
+                    show: true,
+                    triggerOn: 'click',
+                    position: 'top',
+                    formatter: '{c}',
+                    backgroundColor: 'rgba(153, 204, 255, .6)'
+                }
+            }
+        }
+        mounted() {
+            const div = (this.$refs.chartWrapper as HTMLDivElement);
+            div.scrollLeft = div.scrollWidth;
+        }
         beforeCreate() {
             this.$store.commit('fetchRecords')
         }
@@ -113,5 +199,15 @@
     margin-right: auto;
     margin-left: 16px;
     color: #999999;
+}
+.echarts {
+    max-width: 100%;
+    height: 400px;
+}
+.chart {
+    width: 430%;
+    &-wrapper {
+        overflow: auto;
+    }
 }
 </style>
