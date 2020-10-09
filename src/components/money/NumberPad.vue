@@ -5,17 +5,17 @@
                 <button @click="inputContent">1</button>
                 <button @click="inputContent">2</button>
                 <button @click="inputContent">3</button>
-                <button @click="remove"><Icon name="back"></Icon></button>
+                <button @click="remove" class="back"><Icon name="back"></Icon></button>
                 <button @click="inputContent">4</button>
                 <button @click="inputContent">5</button>
                 <button @click="inputContent">6</button>
-                <button @click="clear">清空</button>
+                <button @click="inputContent" class="zero">0</button>
                 <button @click="inputContent">7</button>
                 <button @click="inputContent">8</button>
                 <button @click="inputContent">9</button>
+                <button @click="inputContent" class="point">.</button>
+                <button @click="clear" class="empty">清空</button>
                 <button @click="ok" class="ok">确定</button>
-                <button @click="inputContent" class="zero">0</button>
-                <button @click="inputContent">.</button>
             </div>
         </div>
 </template>
@@ -83,43 +83,40 @@
     }
     .buttons {
         @extend %clearfix;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
         > button {
-            width: 25%;
+            width: 20%;
             height: 64px;
             background: transparent;
             border: none;
             font-size: 20px;
+            margin: 6px;
+            &.back {
+                font-size: 48px;
+                width: 26%;
+            }
+            &.empty {
+                width: 23*2%;
+            }
             &.ok {
-                height: 64*2px;
-                float: right;
+                width: 23*2%;
             }
             &.zero {
-                width: 25*2%;
+               width: 26%;
             }
-            $bg: #ffffff;
-            &:nth-child(1) {
+            &.point {
+                width: 26%;
+                font-size: 30px;
+                font-weight: bold;
+            }
+            $bg: #eee;
+            & {
                 background: $bg;
-            }
-            &:nth-child(2), &:nth-child(5){
-                background: darken($bg, 4%);
-            }
-            &:nth-child(3), &:nth-child(6), &:nth-child(9) {
-                background: darken($bg, 4*2%);
-            }
-            &:nth-child(4), &:nth-child(7), &:nth-child(10) {
-                background: darken($bg, 4*3%);
-            }
-            &:nth-child(8), &:nth-child(11), &:nth-child(13) {
-                background: darken($bg, 4*4%);
-            }
-            &:nth-child(12) {
-                background: darken($bg, 4*5%);
-            }
-            &:nth-child(14) {
-                background: darken($bg, 4*6%);
-            }
-            > .icon {
-                font-size: 26px;
+                box-shadow: -2px -2px 5px white, 3px 3px 5px rgba(0, 0, 0, 0.1);
+                border-radius: 10px;
             }
         }
     }
