@@ -72,31 +72,32 @@
 @import "~@/assets/style/helper.scss";
 .numberPad {
     .output {
-        @extend %clearfix;
-        height: 72px;
-        font-size: 36px;
+        height: 64px;
+        font-size: 46px;
         font-family: Consolas, monospace;
-        padding: 9px 16px;
+        background: #fff;
+        padding: 0 16px;
         text-align: right;
         box-shadow: inset 0 -3px 3px -3px fade_out(black, 0.6), 
                     inset 0 3px 3px -3px fade_out(black, 0.6);
     }
     .buttons {
-        @extend %clearfix;
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
         align-items: center;
         > button {
             width: 20%;
-            height: 64px;
+            height: 54px;
             background: transparent;
             border: none;
             font-size: 20px;
+            font-weight: 500;
             margin: 6px;
             &.back {
-                font-size: 48px;
+                font-size: 40px;
                 width: 26%;
+                vertical-align: middle;
             }
             &.empty {
                 width: 23*2%;
